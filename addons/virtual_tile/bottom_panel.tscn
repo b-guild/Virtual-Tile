@@ -1,0 +1,50 @@
+[gd_scene load_steps=5 format=3 uid="uid://svh377l8ki7t"]
+
+[ext_resource type="Script" path="res://addons/virtual_tile/bottom_panel.gd" id="1_qcgcm"]
+[ext_resource type="ButtonGroup" uid="uid://b1envk8d2oii1" path="res://addons/virtual_tile/toolbar_group.tres" id="1_yjf7r"]
+[ext_resource type="Texture2D" uid="uid://c23mtwsxtb5a7" path="res://addons/virtual_tile/Edit.svg" id="2_ln7oy"]
+[ext_resource type="Texture2D" uid="uid://bmsshcxmatjbj" path="res://addons/virtual_tile/Rectangle.svg" id="3_50g6r"]
+
+[node name="VirtualTilePanel" type="VBoxContainer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_qcgcm")
+
+[node name="Toolbar" type="HBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="Info" type="Label" parent="Toolbar"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="PaintButton" type="Button" parent="Toolbar"]
+custom_minimum_size = Vector2(31, 0)
+layout_mode = 2
+toggle_mode = true
+button_group = ExtResource("1_yjf7r")
+icon = ExtResource("2_ln7oy")
+icon_alignment = 1
+
+[node name="RectButton" type="Button" parent="Toolbar"]
+custom_minimum_size = Vector2(31, 0)
+layout_mode = 2
+toggle_mode = true
+button_group = ExtResource("1_yjf7r")
+icon = ExtResource("3_50g6r")
+icon_alignment = 1
+
+[node name="VSeparator2" type="VSeparator" parent="Toolbar"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="RefreshButton" type="Button" parent="Toolbar"]
+custom_minimum_size = Vector2(71, 0)
+layout_mode = 2
+text = "Refresh"
+
+[node name="Tiles" type="FlowContainer" parent="."]
+layout_mode = 2
+size_flags_vertical = 3
