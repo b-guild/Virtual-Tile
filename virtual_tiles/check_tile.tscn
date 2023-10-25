@@ -1,0 +1,8 @@
+[gd_scene load_steps=3 format=3 uid="uid://cilk64pbo6pyn"]
+
+[ext_resource type="Texture2D" uid="uid://bs3p17wrfe3ca" path="res://example/checker_icon.svg" id="1_u16vy"]
+[ext_resource type="Script" path="res://example/check_tile.gd" id="2_giydl"]
+
+[node name="CheckTile" type="Button"]
+icon = ExtResource("1_u16vy")
+script = ExtResource("2_giydl")

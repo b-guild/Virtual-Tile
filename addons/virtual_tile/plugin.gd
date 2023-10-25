@@ -36,6 +36,7 @@ func _ready() -> void:
 	_refresh()
 
 func _refresh() -> void:
+	if not is_instance_valid(panel): return
 	var sys: EditorFileSystem = get_editor_interface().get_resource_filesystem()
 	var dir: EditorFileSystemDirectory = sys.get_filesystem_path(VIRTUAL_TILE_PATH)
 	if not dir: return
@@ -58,7 +59,8 @@ func _on_mouse_exit() -> void:
 	mouse_inside = false
 	
 func _make_visible(visible: bool) -> void:
-	panel.visible = visible
+	if is_instance_valid(panel):
+		panel.visible = visible
 
 func _handles(object: Object) -> bool:
 	return object is TileMap
@@ -105,15 +107,14 @@ func paint_rect(pos: Rect2i, paint: bool) -> void:
 	if not is_instance_valid(tile): return
 	var undo_manager = get_undo_redo()
 	var merge = UndoRedo.MERGE_DISABLE
-	tile.tilemap = tilemap
-	tile.undo_redo = undo_manager
 	undo_manager.create_action("Draw virtual cell rect", merge, tilemap, UNDO_REVERSE)
 	if paint: tile.draw_tile_rect(self, pos)
 	else: tile.erase_tile_rect(self, pos)
 	undo_manager.commit_action(false)
 
 func _forward_canvas_gui_input(event: InputEvent) -> bool:
-	if not panel.visible or not is_instance_valid(tilemap): return false
+	if not is_instance_valid(panel) or not panel.visible or not is_instance_valid(tilemap):
+		return false
 	if not event is InputEventWithModifiers: return false
 	if event.is_echo(): return false
 	var mode: VirtualTilePanel.Mode = panel.mode
@@ -148,7 +149,6 @@ func _forward_canvas_gui_input(event: InputEvent) -> bool:
 		if event_position == current_position:
 			return false
 		current_position = event_position
-		if left_button_down: print(current_position)
 		if not left_button_down and not right_button_down:
 			initial_click = event_position
 		elif not rect_tool:
