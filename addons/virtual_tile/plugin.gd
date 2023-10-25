@@ -36,7 +36,6 @@ func _ready() -> void:
 	_refresh()
 
 func _refresh() -> void:
-	if not is_instance_valid(panel): return
 	var sys: EditorFileSystem = get_editor_interface().get_resource_filesystem()
 	var dir: EditorFileSystemDirectory = sys.get_filesystem_path(VIRTUAL_TILE_PATH)
 	if not dir: return
@@ -59,18 +58,13 @@ func _on_mouse_exit() -> void:
 	mouse_inside = false
 	
 func _make_visible(visible: bool) -> void:
-	if is_instance_valid(panel):
-		panel.visible = visible
+	panel.visible = visible
 
 func _handles(object: Object) -> bool:
 	return object is TileMap
 
 func _edit(object: Object) -> void:
-	if object == null or not object is TileMap:
-		panel.visible = false
-		return
 	tilemap = object as TileMap
-	panel.visible = true
 
 func _clear() -> void:
 	tilemap = null
@@ -113,8 +107,7 @@ func paint_rect(pos: Rect2i, paint: bool) -> void:
 	undo_manager.commit_action(false)
 
 func _forward_canvas_gui_input(event: InputEvent) -> bool:
-	if not is_instance_valid(panel) or not panel.visible or not is_instance_valid(tilemap):
-		return false
+	if not panel.visible or not is_instance_valid(tilemap): return false
 	if not event is InputEventWithModifiers: return false
 	if event.is_echo(): return false
 	var mode: VirtualTilePanel.Mode = panel.mode
