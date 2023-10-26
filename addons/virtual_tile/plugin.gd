@@ -107,7 +107,8 @@ func paint_rect(pos: Rect2i, paint: bool) -> void:
 	undo_manager.commit_action(false)
 
 func _forward_canvas_gui_input(event: InputEvent) -> bool:
-	if not panel.visible or not is_instance_valid(tilemap): return false
+	if not panel.visible or not is_instance_valid(tilemap)\
+		or not is_instance_valid(tilemap.tile_set): return false
 	if not event is InputEventWithModifiers: return false
 	if event.is_echo(): return false
 	var mode: VirtualTilePanel.Mode = panel.mode
@@ -167,7 +168,9 @@ func _forward_canvas_gui_input(event: InputEvent) -> bool:
 	return false
 
 func _forward_canvas_draw_over_viewport(overlay: Control) -> void:
-	if not mouse_inside or not panel.visible:
+	if not mouse_inside or not panel.visible\
+		or not is_instance_valid(tilemap)\
+		or not is_instance_valid(tilemap.tile_set):
 		return
 	var transform := tilemap.get_viewport_transform() * tilemap.global_transform
 	var area: Rect2i
