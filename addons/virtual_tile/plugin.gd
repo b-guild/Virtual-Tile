@@ -8,6 +8,7 @@ const UNDO_REVERSE = true
 const RECT_COLOR = Color(1, 1 , 1, 0.5)
 
 var panel: VirtualTilePanel
+var panel_button: Button
 var mouse_inside: bool = false
 var erasing: bool = false
 var initial_click: Vector2i
@@ -20,20 +21,19 @@ var current_position: Vector2i
 
 func _enter_tree() -> void:
 	panel = PANEL.instantiate() as VirtualTilePanel
-	panel.refresh_requested.connect(_refresh)
-	var main = get_editor_interface().get_editor_main_screen()
+	var ei = get_editor_interface()
+	var main = ei.get_editor_main_screen()
 	main.mouse_entered.connect(_on_mouse_enter)
 	main.mouse_exited.connect(_on_mouse_exit)
-	add_control_to_bottom_panel(panel, "Virtual Tile")
+	var sys: EditorFileSystem = ei.get_resource_filesystem()
+	sys.filesystem_changed.connect(_refresh)
+	panel_button = add_control_to_bottom_panel(panel, "Virtual Tile")
 	_make_visible(false)
 
 func _exit_tree() -> void:
 	if is_instance_valid(panel):
 		remove_control_from_bottom_panel(panel)
 		panel.queue_free()
-
-func _ready() -> void:
-	_refresh()
 
 func _refresh() -> void:
 	var sys: EditorFileSystem = get_editor_interface().get_resource_filesystem()
@@ -58,7 +58,7 @@ func _on_mouse_exit() -> void:
 	mouse_inside = false
 	
 func _make_visible(visible: bool) -> void:
-	panel.visible = visible
+	panel_button.visible = visible
 
 func _handles(object: Object) -> bool:
 	return object is TileMap

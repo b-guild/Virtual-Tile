@@ -5,14 +5,11 @@ class_name VirtualTilePanel
 const VIRTUAL_TILE_GROUP = preload("res://addons/virtual_tile/toolbar_group.tres")
 
 signal mode_changed
-signal refresh_requested
 
 @onready
 var paintButton: Button = $Toolbar/PaintButton
 @onready
 var rectButton: Button = $Toolbar/RectButton
-@onready
-var refreshButton: Button = $Toolbar/RefreshButton
 @onready
 var info_label: Label = $Toolbar/Info
 @onready
@@ -40,13 +37,9 @@ var mode: Mode:
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	refreshButton.pressed.connect(_on_refresh_pressed)
 	paintButton.pressed.connect(_on_mode_button)
 	rectButton.pressed.connect(_on_mode_button)
 	
-func _on_refresh_pressed() -> void:
-	refresh_requested.emit()
-
 func _on_mode_button() -> void:
 	_inner_mode = Mode.NONE
 	if paintButton.button_pressed:
